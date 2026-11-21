@@ -253,7 +253,8 @@
 
     resize();
     if (!reduceMotion) {
-      // start immediately; the observer only pauses rendering when scrolled away
+      // paint an immediate first frame, then animate; the observer only pauses when scrolled away
+      draw();
       start();
       if ("IntersectionObserver" in window) {
         const io = new IntersectionObserver((entries) => {
