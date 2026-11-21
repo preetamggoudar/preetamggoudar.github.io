@@ -78,6 +78,213 @@
     reveals.forEach((el, i) => { el.style.transitionDelay = (i % 3) * 70 + "ms"; io.observe(el); });
   }
 
+  /* ---------------- animated 3D hero core ---------------- */
+  (function initHero3D() {
+    const canvas = document.getElementById("hero-3d");
+    const hero = document.getElementById("home");
+    if (!canvas || !hero) return;
+    const ctx = canvas.getContext && canvas.getContext("2d");
+    if (!ctx) return;
+
+    let width = 1, height = 1, dpr = 1;
+    let running = false, rafId = 0, last = 0, spin = 0;
+    let visible = true;
+    const ptr = { x: 0, y: 0, tx: 0, ty: 0 };
+
+    // build a unit sphere: latitude rings + meridians + intersection nodes
+    const LAT = 7, LON = 14, SEG = 32;
+    const lines = [];
+    const nodes = [];
+    for (let i = 1; i < LAT; i++) {
+      const phi = -Math.PI / 2 + (Math.PI * i) / LAT;
+      const cp = Math.cos(phi), y = Math.sin(phi);
+      const ring = [];
+      for (let j = 0; j <= SEG; j++) {
+        const th = (Math.PI * 2 * j) / SEG;
+        ring.push([cp * Math.cos(th), y, cp * Math.sin(th)]);
+      }
+      lines.push(ring);
+      for (let j = 0; j < LON; j++) {
+        const th = (Math.PI * 2 * j) / LON;
+        nodes.push([cp * Math.cos(th), y, cp * Math.sin(th)]);
+      }
+    }
+    for (let i = 0; i < LON; i++) {
+      const th = (Math.PI * 2 * i) / LON;
+      const ring = [];
+      for (let j = 0; j <= SEG; j++) {
+        const phi = -Math.PI / 2 + (Math.PI * j) / SEG;
+        const cp = Math.cos(phi);
+        ring.push([cp * Math.cos(th), Math.sin(phi), cp * Math.sin(th)]);
+      }
+      lines.push(ring);
+    }
+
+    const rotate = (p, ax, ay) => {
+      const cy = Math.cos(ay), sy = Math.sin(ay);
+      const x1 = p[0] * cy + p[2] * sy;
+      const z1 = -p[0] * sy + p[2] * cy;
+      const cx = Math.cos(ax), sx = Math.sin(ax);
+      return [x1, p[1] * cx - z1 * sx, p[1] * sx + z1 * cx];
+    };
+
+    const colors = () => root.dataset.theme === "light"
+      ? { a: [12, 140, 105], b: [37, 99, 235], c: [147, 51, 234] }
+      : { a: [79, 209, 165], b: [91, 156, 255], c: [192, 132, 252] };
+
+    const draw = () => {
+      ctx.clearRect(0, 0, width, height);
+      const cx = width * 0.5;
+      const cy = height * 0.44;
+      const r = Math.min(width * 0.36, height * 0.52, 400);
+      const camZ = r * 3.2;
+      const ax = 0.35 + ptr.y * 0.35 + Math.sin(spin * 0.6) * 0.08;
+      const ay = spin + ptr.x * 0.5;
+      const pal = colors();
+      const light = root.dataset.theme === "light";
+      const rgba = (c, a) => "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + a.toFixed(3) + ")";
+      const proj = (p) => {
+        const q = rotate(p, ax, ay);
+        const s = camZ / (camZ - q[2] * r);
+        return { x: cx + q[0] * r * s, y: cy + q[1] * r * s, z: q[2] };
+      };
+
+      // soft halo behind the core
+      const halo = ctx.createRadialGradient(cx, cy, r * 0.1, cx, cy, r * 1.35);
+      halo.addColorStop(0, rgba(pal.b, light ? 0.06 : 0.10));
+      halo.addColorStop(0.6, rgba(pal.a, 0.035));
+      halo.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.fillStyle = halo;
+      ctx.beginPath();
+      ctx.arc(cx, cy, r * 1.35, 0, Math.PI * 2);
+      ctx.fill();
+
+      // wireframe with depth-based opacity
+      ctx.lineWidth = 1;
+      for (let li = 0; li < lines.length; li++) {
+        const ring = lines[li];
+        const col = li < LAT - 1 ? pal.a : pal.b;
+        let prev = proj(ring[0]);
+        for (let k = 1; k < ring.length; k++) {
+          const cur = proj(ring[k]);
+          const t = ((prev.z + cur.z) * 0.5 + 1) * 0.5;
+          ctx.strokeStyle = rgba(col, 0.05 + t * t * 0.20);
+          ctx.beginPath();
+          ctx.moveTo(prev.x, prev.y);
+          ctx.lineTo(cur.x, cur.y);
+          ctx.stroke();
+          prev = cur;
+        }
+      }
+
+      // intersection nodes on the visible half
+      for (let i = 0; i < nodes.length; i++) {
+        const p = proj(nodes[i]);
+        if (p.z < -0.35) continue;
+        const t = (p.z + 1) * 0.5;
+        ctx.fillStyle = rgba(pal.c, 0.08 + t * 0.28);
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 0.7 + t * 1.3, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // a glowing particle orbiting the sphere
+      const oa = spin * 1.5;
+      const orbit = proj([Math.cos(oa) * 1.18, Math.sin(oa * 1.3) * 0.42, Math.sin(oa) * 1.18]);
+      const glow = ctx.createRadialGradient(orbit.x, orbit.y, 0, orbit.x, orbit.y, 16);
+      glow.addColorStop(0, rgba(pal.c, 0.9));
+      glow.addColorStop(0.35, rgba(pal.c, 0.35));
+      glow.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.fillStyle = glow;
+      ctx.beginPath();
+      ctx.arc(orbit.x, orbit.y, 16, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = rgba(pal.c, 0.95);
+      ctx.beginPath();
+      ctx.arc(orbit.x, orbit.y, 2.2, 0, Math.PI * 2);
+      ctx.fill();
+    };
+
+    const frame = (time) => {
+      if (!running) return;
+      const dt = last ? Math.min((time - last) / 1000, 0.05) : 0.016;
+      last = time;
+      spin += dt * 0.32;
+      ptr.x += (ptr.tx - ptr.x) * 0.05;
+      ptr.y += (ptr.ty - ptr.y) * 0.05;
+      draw();
+      rafId = requestAnimationFrame(frame);
+    };
+    const start = () => {
+      if (running || reduceMotion) return;
+      running = true; last = 0;
+      rafId = requestAnimationFrame(frame);
+    };
+    const stop = () => {
+      running = false;
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = 0;
+    };
+
+    const resize = () => {
+      const rect = hero.getBoundingClientRect();
+      width = Math.max(rect.width, 1);
+      height = Math.max(rect.height, 1);
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      canvas.style.width = width + "px";
+      canvas.style.height = height + "px";
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      if (reduceMotion) draw();
+    };
+
+    hero.addEventListener("pointermove", (e) => {
+      const rect = hero.getBoundingClientRect();
+      ptr.tx = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+      ptr.ty = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
+    }, { passive: true });
+    hero.addEventListener("pointerleave", () => { ptr.tx = 0; ptr.ty = 0; });
+    window.addEventListener("resize", resize, { passive: true });
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) stop();
+      else if (visible) start();
+    });
+
+    resize();
+    if (!reduceMotion) {
+      // start immediately; the observer only pauses rendering when scrolled away
+      start();
+      if ("IntersectionObserver" in window) {
+        const io = new IntersectionObserver((entries) => {
+          visible = entries[0].isIntersecting;
+          if (visible && !document.hidden) start(); else stop();
+        }, { threshold: 0 });
+        io.observe(hero);
+      }
+    } else if ("MutationObserver" in window) {
+      // keep the static frame in sync when the theme changes
+      new MutationObserver(() => draw()).observe(root, { attributes: true, attributeFilter: ["data-theme"] });
+    }
+
+    /* subtle 3D tilt on cards */
+    if (!reduceMotion && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+      document.querySelectorAll(".skill-card, .project-card, .fact-card, .education-card").forEach((card) => {
+        card.addEventListener("pointermove", (e) => {
+          const rect = card.getBoundingClientRect();
+          const px = (e.clientX - rect.left) / rect.width - 0.5;
+          const py = (e.clientY - rect.top) / rect.height - 0.5;
+          card.style.transition = "transform .1s ease-out";
+          card.style.transform = "perspective(800px) rotateX(" + (-py * 7).toFixed(2) + "deg) rotateY(" + (px * 9).toFixed(2) + "deg) translateY(-3px)";
+        });
+        card.addEventListener("pointerleave", () => {
+          card.style.transition = "";
+          card.style.transform = "";
+        });
+      });
+    }
+  })();
+
   /* ---------------- terminal ---------------- */
   const output = document.getElementById("term-output");
   const form = document.getElementById("term-form");
