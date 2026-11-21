@@ -78,6 +78,135 @@
     reveals.forEach((el, i) => { el.style.transitionDelay = (i % 3) * 70 + "ms"; io.observe(el); });
   }
 
+  /* ---------------- animated 3D particle background ---------------- */
+  (function initBackground3D() {
+    const canvas = document.getElementById("bg-3d");
+    if (!canvas) return;
+    const ctx = canvas.getContext && canvas.getContext("2d");
+    if (!ctx) return;
+
+    let w = 1, h = 1, dpr = 1;
+    let rafId = 0, last = 0, elapsed = 0;
+    const ptr = { x: 0, y: 0, tx: 0, ty: 0 };
+
+    const COUNT = 82, LINK = 0.52, CAM = 3.4;
+    const particles = [];
+    for (let i = 0; i < COUNT; i++) {
+      particles.push({
+        x: Math.random() * 2 - 1,
+        y: Math.random() * 2 - 1,
+        z: Math.random() * 2.6 - 1.3,
+        tint: Math.random(),
+        phase: Math.random() * Math.PI * 2
+      });
+    }
+
+    const palette = () => root.dataset.theme === "light"
+      ? [[12, 140, 105], [37, 99, 235], [147, 51, 234]]
+      : [[79, 209, 165], [91, 156, 255], [192, 132, 252]];
+    const rgba = (c, a) => "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + a.toFixed(3) + ")";
+
+    const draw = () => {
+      ctx.clearRect(0, 0, w, h);
+      const pal = palette();
+      const cx = w * 0.5 + ptr.x * 26;
+      const cy = h * 0.5 + ptr.y * 18;
+      const spread = Math.max(w, h) * 0.4;
+      const pts = [];
+
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        const s = CAM / (CAM - p.z);
+        const wy = p.y + Math.sin(elapsed * 0.5 + p.phase) * 0.035;
+        pts.push({
+          x: cx + p.x * spread * s,
+          y: cy + wy * spread * s,
+          wx: p.x, wy: wy, wz: p.z,
+          c: pal[p.tint < 0.55 ? 0 : p.tint < 0.85 ? 1 : 2]
+        });
+      }
+
+      // constellation links in 3D space
+      ctx.lineWidth = 1;
+      for (let i = 0; i < pts.length; i++) {
+        const a = pts[i];
+        for (let j = i + 1; j < pts.length; j++) {
+          const b = pts[j];
+          const dx = a.wx - b.wx, dy = a.wy - b.wy, dz = a.wz - b.wz;
+          const d2 = dx * dx + dy * dy + dz * dz;
+          if (d2 > LINK * LINK) continue;
+          const depth = (a.wz + b.wz + 2.6) / 5.2;
+          const alpha = (1 - Math.sqrt(d2) / LINK) * (0.05 + depth * 0.13);
+          ctx.strokeStyle = rgba(a.c, alpha);
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+        }
+      }
+
+      // depth-scaled points
+      for (let i = 0; i < pts.length; i++) {
+        const p = pts[i];
+        const depth = (p.wz + 1.3) / 2.6;
+        ctx.fillStyle = rgba(p.c, 0.14 + depth * 0.42);
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 0.7 + depth * 1.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    };
+
+    const frame = (time) => {
+      if (!rafId) return;
+      const dt = last ? Math.min((time - last) / 1000, 0.05) : 0.016;
+      last = time;
+      elapsed += dt;
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        p.z += dt * 0.1;
+        if (p.z > 1.3) {
+          p.z = -1.3;
+          p.x = Math.random() * 2 - 1;
+          p.y = Math.random() * 2 - 1;
+          p.phase = Math.random() * Math.PI * 2;
+        }
+      }
+      ptr.x += (ptr.tx - ptr.x) * 0.04;
+      ptr.y += (ptr.ty - ptr.y) * 0.04;
+      draw();
+      rafId = requestAnimationFrame(frame);
+    };
+    const start = () => { if (!rafId && !reduceMotion) { last = 0; rafId = requestAnimationFrame(frame); } };
+    const stop = () => { if (rafId) cancelAnimationFrame(rafId); rafId = 0; };
+
+    const resize = () => {
+      w = Math.max(window.innerWidth, 1);
+      h = Math.max(window.innerHeight, 1);
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(w * dpr);
+      canvas.height = Math.round(h * dpr);
+      canvas.style.width = w + "px";
+      canvas.style.height = h + "px";
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      if (reduceMotion) draw();
+    };
+
+    window.addEventListener("pointermove", (e) => {
+      ptr.tx = (e.clientX / window.innerWidth - 0.5) * 2;
+      ptr.ty = (e.clientY / window.innerHeight - 0.5) * 2;
+    }, { passive: true });
+    window.addEventListener("resize", resize, { passive: true });
+    document.addEventListener("visibilitychange", () => { if (document.hidden) stop(); else start(); });
+
+    resize();
+    if (!reduceMotion) {
+      draw();
+      start();
+    } else if ("MutationObserver" in window) {
+      new MutationObserver(() => draw()).observe(root, { attributes: true, attributeFilter: ["data-theme"] });
+    }
+  })();
+
   /* ---------------- animated 3D hero core ---------------- */
   (function initHero3D() {
     const canvas = document.getElementById("hero-3d");
