@@ -402,7 +402,8 @@
     },
     skills: () => {
       addLine("ai_ml        — Generative AI, Machine Learning, Deep Learning, Prompt Engineering, RAG, Computer Vision", true);
-      addLine("models_tools — Gemma, Gemini, LoRA Fine-tuning, Hugging Face, Gradio, Google AI Studio, Git & GitHub", true);
+      addLine("ai_models    — Claude, ChatGPT / GPT, Gemini, Gemma, Llama, Mistral, DeepSeek, Qwen", true);
+      addLine("models_tools — LoRA Fine-tuning, Hugging Face, Gradio, Google AI Studio, Git & GitHub", true);
       addLine("web_build    — AI Web Development, Web Development, HTML/CSS, JavaScript, Python, SQL, Open Source", true);
       addLine("core_cs      — Data Structures, Algorithms, OOP, DBMS, Problem Solving", true);
       addLine("leadership   — Leadership, Entrepreneurship, Community Building, Public Speaking, Mentoring, Teamwork");
