@@ -161,13 +161,8 @@ h1 { font-size: clamp(2.8rem, 5.6vw, 4.35rem); line-height: 1.05; margin: 26px 0
 .social-row a:hover { color: var(--text); }
 .social-row svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 
-/* large, crisp poster-style cut-out beside the name */
-.hero-visual { position: relative; padding-top: 370px; }
-.cutout-3d {
-  position: absolute; top: -4px; right: 22px; z-index: 3;
-  width: clamp(260px, 28vw, 360px); height: auto; margin: 0; pointer-events: none;
-  image-rendering: -webkit-optimize-contrast;
-}
+/* hero visual */
+.hero-visual { position: relative; }
 
 /* console */
 .console {
@@ -350,8 +345,7 @@ h1 { font-size: clamp(2.8rem, 5.6vw, 4.35rem); line-height: 1.05; margin: 26px 0
 /* responsive */
 @media (max-width: 1020px) {
   .hero-grid { grid-template-columns: 1fr; gap: 44px; }
-  .hero-visual { max-width: 680px; padding-top: 0; }
-  .cutout-3d { position: static; display: block; width: 230px; margin: -30px auto -20px; }
+  .hero-visual { max-width: 680px; }
   .console { max-width: 680px; }
   .about-grid { grid-template-columns: 1fr; }
   .stats { grid-template-columns: repeat(2, 1fr); }
@@ -371,7 +365,6 @@ h1 { font-size: clamp(2.8rem, 5.6vw, 4.35rem); line-height: 1.05; margin: 26px 0
   .nav a { padding: 11px 2px; border-bottom: 1px solid var(--border-soft); }
   .nav a.active::after { display: none; }
   .menu-toggle { display: block; }
-  .cutout-3d { width: 170px; margin: -20px auto -12px; }
   .hero { padding-top: 56px; }
   h1 { font-size: clamp(2.4rem, 10vw, 3.4rem); }
   .hero-tagline { font-size: .98rem; }

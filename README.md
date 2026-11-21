@@ -16,13 +16,12 @@ GitHub Pages serves the site.
 | `styles.css` | Design system, layout and responsive styles |
 | `script.js` | Scroll reveals, rotating role text, mobile menu, stat counters |
 | `assets/avatar.jpg` | GitHub avatar (legacy) |
-| `assets/avatar-linkedin.jpg` | LinkedIn profile photo (source for the cut-out and social previews) |
-| `assets/avatar-cutout-hi.png` | High-resolution, background-removed cut-out shown big beside the name in the hero |
+| `assets/avatar-linkedin.jpg` | Profile photo used for social previews (`og:image`) |
 
 ## Update content
 
 Edit `index.html` to change text, links, experience or projects. Replace
-`assets/avatar-cutout-hi.png` to change the hero cut-out. Commit and push to `main`;
+`assets/avatar-linkedin.jpg` to change the social preview image. Commit and push to `main`;
 the live site updates in under a minute.
 
 ## Local preview
