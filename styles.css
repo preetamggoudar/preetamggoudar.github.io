@@ -16,10 +16,18 @@
   --accent-soft: rgba(79, 209, 165, .12);
   --shadow: 0 20px 60px rgba(0, 0, 0, .28);
   --code-bg: #0d1420;
-  --dot: rgba(154, 167, 186, .16);
-  --glow-a: rgba(79, 209, 165, .20);
-  --glow-b: rgba(92, 126, 235, .17);
-  --glow-c: rgba(169, 112, 226, .13);
+  --dot: rgba(154, 167, 186, .17);
+  --glow-a: rgba(45, 212, 191, .28);
+  --glow-b: rgba(99, 102, 241, .27);
+  --glow-c: rgba(217, 70, 239, .22);
+  --glow-d: rgba(251, 146, 60, .19);
+  --glow-e: rgba(56, 189, 248, .22);
+  --c1: rgba(34, 211, 167, .30);
+  --c2: rgba(79, 124, 255, .28);
+  --c3: rgba(168, 85, 247, .25);
+  --c4: rgba(244, 114, 182, .22);
+  --c5: rgba(251, 191, 36, .15);
+  --orb-blend: screen;
   --max: 1160px;
 }
 [data-theme="light"] {
@@ -38,9 +46,17 @@
   --shadow: 0 18px 50px rgba(15, 23, 42, .08);
   --code-bg: #f1f5fa;
   --dot: rgba(37, 62, 88, .13);
-  --glow-a: rgba(45, 199, 150, .18);
-  --glow-b: rgba(96, 165, 250, .20);
-  --glow-c: rgba(192, 132, 252, .15);
+  --glow-a: rgba(45, 212, 191, .30);
+  --glow-b: rgba(96, 165, 250, .30);
+  --glow-c: rgba(192, 132, 252, .27);
+  --glow-d: rgba(251, 146, 60, .22);
+  --glow-e: rgba(56, 189, 248, .24);
+  --c1: rgba(45, 212, 191, .32);
+  --c2: rgba(96, 165, 250, .32);
+  --c3: rgba(192, 132, 252, .30);
+  --c4: rgba(244, 114, 182, .26);
+  --c5: rgba(251, 191, 36, .22);
+  --orb-blend: normal;
   --max: 1160px;
 }
 
@@ -66,23 +82,45 @@ button { cursor: pointer; }
 
 /* ---------------- ambient background ---------------- */
 .bg-effects { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+.color-mesh {
+  position: absolute; inset: -12%;
+  background:
+    radial-gradient(45% 42% at 12% 10%, var(--c1) 0%, transparent 72%),
+    radial-gradient(42% 40% at 86% 14%, var(--c2) 0%, transparent 72%),
+    radial-gradient(46% 44% at 80% 84%, var(--c3) 0%, transparent 72%),
+    radial-gradient(42% 40% at 16% 90%, var(--c4) 0%, transparent 72%),
+    radial-gradient(38% 36% at 50% 48%, var(--c5) 0%, transparent 72%);
+  filter: blur(46px); opacity: .95;
+  animation: meshShift 28s ease-in-out infinite alternate;
+}
 .bg-effects .glow {
   position: absolute; display: block; border-radius: 50%;
-  filter: blur(90px); will-change: transform; animation: drift 26s ease-in-out infinite;
+  filter: blur(80px); mix-blend-mode: var(--orb-blend);
+  will-change: transform; animation: drift 24s ease-in-out infinite;
 }
 .glow-1 {
-  width: 48vw; height: 48vw; top: -14vw; left: -10vw;
+  width: 42vw; height: 42vw; top: -12vw; left: -8vw;
   background: radial-gradient(circle, var(--glow-a) 0%, transparent 68%);
 }
 .glow-2 {
-  width: 42vw; height: 42vw; top: 18%; right: -13vw;
+  width: 38vw; height: 38vw; top: 12%; right: -11vw;
   background: radial-gradient(circle, var(--glow-b) 0%, transparent 68%);
-  animation-delay: -9s; animation-duration: 32s;
+  animation-delay: -7s; animation-duration: 30s;
 }
 .glow-3 {
-  width: 46vw; height: 46vw; bottom: -18vw; left: 16%;
+  width: 40vw; height: 40vw; bottom: -15vw; left: 10%;
   background: radial-gradient(circle, var(--glow-c) 0%, transparent 68%);
-  animation-delay: -16s; animation-duration: 38s;
+  animation-delay: -13s; animation-duration: 34s;
+}
+.glow-4 {
+  width: 28vw; height: 28vw; top: 38%; left: 30%;
+  background: radial-gradient(circle, var(--glow-d) 0%, transparent 70%);
+  animation-delay: -4s; animation-duration: 27s;
+}
+.glow-5 {
+  width: 30vw; height: 30vw; bottom: 4%; right: 6%;
+  background: radial-gradient(circle, var(--glow-e) 0%, transparent 70%);
+  animation-delay: -18s; animation-duration: 36s;
 }
 .bg-grid {
   position: absolute; inset: 0;
@@ -98,6 +136,11 @@ button { cursor: pointer; }
 @keyframes drift {
   0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
   50% { transform: translate3d(4vw, -3vw, 0) scale(1.14); }
+}
+@keyframes meshShift {
+  0% { transform: translate3d(-2%, -1%, 0) scale(1); }
+  50% { transform: translate3d(3%, 2%, 0) scale(1.08); }
+  100% { transform: translate3d(-1%, 3%, 0) scale(1.03); }
 }
 .site-header, main, .site-footer { position: relative; z-index: 1; }
 
@@ -371,6 +414,6 @@ h1 { font-size: clamp(2.8rem, 5.6vw, 4.35rem); line-height: 1.05; margin: 26px 0
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
-  .bg-effects .glow { animation: none !important; }
+  .bg-effects .glow, .color-mesh { animation: none !important; }
   .reveal { opacity: 1; transform: none; }
 }
