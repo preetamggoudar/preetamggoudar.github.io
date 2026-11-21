@@ -88,6 +88,7 @@
     let w = 1, h = 1, dpr = 1;
     let rafId = 0, last = 0, elapsed = 0;
     const ptr = { x: 0, y: 0, tx: 0, ty: 0 };
+    const CAM = 3.4;
 
     const TOKENS = [
       "{ }", "</>", "=>", "const", "AI", "101", "λ", ";", "()", "[]",
@@ -100,9 +101,25 @@
       y: Math.random() * 2 - 1,
       z: Math.random() * 1.8 - 1.2,
       phase: Math.random() * Math.PI * 2,
-      tilt: (Math.random() - 0.5) * 0.18,
+      tilt: (Math.random() - 0.5) * 0.16,
+      flip: Math.random() * Math.PI * 2,
+      flipSpeed: 0.25 + Math.random() * 0.45,
       tint: i % 3
     }));
+
+    // translucent code-editor panels, slowly turning in perspective
+    const panels = [
+      { x: -0.98, y: -0.62, z: -0.55, w: 0.30, h: 0.21, rx: 0.18, ry: -0.55, rz: -0.06, spin: 0.16, tint: 0, phase: 0.0 },
+      { x:  1.02, y: -0.30, z: -0.20, w: 0.27, h: 0.19, rx: -0.12, ry: 0.60, rz: 0.05, spin: -0.13, tint: 1, phase: 1.9 },
+      { x: -0.92, y:  0.78, z: -0.75, w: 0.32, h: 0.22, rx: 0.10, ry: 0.35, rz: 0.08, spin: 0.11, tint: 2, phase: 3.4 },
+      { x:  0.96, y:  0.86, z: -0.95, w: 0.26, h: 0.18, rx: -0.08, ry: -0.42, rz: -0.04, spin: 0.14, tint: 0, phase: 5.1 }
+    ];
+    panels.forEach((p, pi) => {
+      p.lines = [];
+      for (let k = 0; k < 6; k++) {
+        p.lines.push(0.35 + ((k * 7 + pi * 3) % 10) / 14);
+      }
+    });
 
     // very faint character streams deep in the background
     const GLYPHS = "01{}<>/[]=;+*#";
@@ -121,11 +138,27 @@
       : [[79, 209, 165], [91, 156, 255], [192, 132, 252]];
     const rgba = (c, a) => "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + a.toFixed(3) + ")";
 
+    const rotate = (p, rx, ry, rz) => {
+      const cx = Math.cos(rx), sx = Math.sin(rx);
+      const y1 = p[1] * cx - p[2] * sx, z1 = p[1] * sx + p[2] * cx;
+      const cy = Math.cos(ry), sy = Math.sin(ry);
+      const x2 = p[0] * cy + z1 * sy, z2 = -p[0] * sy + z1 * cy;
+      const cz = Math.cos(rz), sz = Math.sin(rz);
+      return [x2 * cz - y1 * sz, x2 * sz + y1 * cz, z2];
+    };
+
+    let cx = 1, cy = 1, spread = 1;
+
     const draw = () => {
       ctx.clearRect(0, 0, w, h);
       const pal = palette();
-      const spread = Math.min(w, h) * 0.58;
-      const cx = w / 2, cy = h / 2;
+      spread = Math.min(w, h) * 0.58;
+      cx = w / 2;
+      cy = h / 2;
+      const project = (wx, wy, wz) => {
+        const s = CAM / (CAM - wz);
+        return { x: cx + wx * spread * s, y: cy + wy * spread * s, s: s, z: wz };
+      };
 
       // deep code streams
       ctx.font = "500 12px 'JetBrains Mono', ui-monospace, monospace";
@@ -137,23 +170,96 @@
         for (let k = 0; k < st.len; k++) {
           const y = ((st.offset + elapsed * st.speed + k * 24) % (h + 240)) - 120;
           const ch = GLYPHS[(k + i * 3 + Math.floor(elapsed * 1.5)) % GLYPHS.length];
-          ctx.fillStyle = rgba(col, 0.025 + (k / st.len) * 0.045);
+          ctx.fillStyle = rgba(col, 0.022 + (k / st.len) * 0.04);
           ctx.fillText(ch, st.x * w, y);
         }
       }
 
-      // floating syntax tokens at different depths
+      // rotating code-editor panels in perspective
+      for (let i = 0; i < panels.length; i++) {
+        const p = panels[i];
+        const depth = (p.z + 1.2) / 1.8;
+        const par = 0.4 + depth * 0.85;
+        const baseX = p.x + ptr.x * 0.05 * par;
+        const baseY = p.y + ptr.y * 0.035 * par;
+        const pw = p.w, ph = p.h;
+        const rx = p.rx + Math.sin(elapsed * 0.28 + p.phase) * 0.14;
+        const ry = p.ry + elapsed * p.spin;
+        const rz = p.rz;
+        const col = pal[p.tint];
+
+        const corner = (lx, ly) => {
+          const r = rotate([lx, ly, 0], rx, ry, rz);
+          return project(baseX + r[0], baseY + r[1], p.z + r[2]);
+        };
+        const tl = corner(-pw, -ph), tr = corner(pw, -ph);
+        const br = corner(pw, ph), bl = corner(-pw, ph);
+
+        // front/back facing from projected winding
+        const area = (tr.x - tl.x) * (bl.y - tl.y) - (bl.x - tl.x) * (tr.y - tl.y);
+        const facing = area > 0 ? 1 : 0.55;
+
+        // panel body
+        ctx.beginPath();
+        ctx.moveTo(tl.x, tl.y);
+        ctx.lineTo(tr.x, tr.y);
+        ctx.lineTo(br.x, br.y);
+        ctx.lineTo(bl.x, bl.y);
+        ctx.closePath();
+        ctx.fillStyle = rgba(col, 0.030 * facing + depth * 0.018);
+        ctx.fill();
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = rgba(col, 0.10 * facing + depth * 0.05);
+        ctx.stroke();
+
+        // title bar
+        const barH = ph * 0.28;
+        const btl = corner(-pw, -ph), btr = corner(pw, -ph);
+        const bbr = corner(pw, -ph + barH), bbl = corner(-pw, -ph + barH);
+        ctx.beginPath();
+        ctx.moveTo(btl.x, btl.y); ctx.lineTo(btr.x, btr.y);
+        ctx.lineTo(bbr.x, bbr.y); ctx.lineTo(bbl.x, bbl.y); ctx.closePath();
+        ctx.fillStyle = rgba(col, 0.07 * facing);
+        ctx.fill();
+
+        // window dots
+        for (let d = 0; d < 3; d++) {
+          const dot = corner(-pw + pw * 0.18 + d * pw * 0.16, -ph + barH * 0.5);
+          ctx.fillStyle = rgba(pal[(p.tint + d) % 3], 0.22 * facing);
+          ctx.beginPath();
+          ctx.arc(dot.x, dot.y, 1.1 + depth, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        // code lines inside the panel
+        ctx.lineWidth = Math.max(1, (0.8 + depth) * ((tl.s + tr.s) * 0.5));
+        for (let k = 0; k < p.lines.length; k++) {
+          const ly = -ph + barH + (ph * 0.62) * (k / (p.lines.length - 1));
+          const indent = (k % 3) * pw * 0.12;
+          const a = corner(-pw + pw * 0.1 + indent, ly);
+          const b = corner(-pw + pw * 0.1 + indent + pw * 1.55 * p.lines[k], ly);
+          ctx.strokeStyle = rgba(pal[(p.tint + k) % 3], 0.10 * facing + depth * 0.06);
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+        }
+      }
+
+      // floating syntax tokens, each flipping in 3D around its vertical axis
       for (let i = 0; i < tokens.length; i++) {
         const t = tokens[i];
         const wy = t.y - elapsed * 0.012 + Math.sin(elapsed * 0.3 + t.phase) * 0.035;
         const y = wy < -1.3 ? 1.3 : wy;
         const depth = (t.z + 1.2) / 1.8;
-        const persp = 3.4 / (3.4 - t.z);
-        const x = cx + t.x * spread * persp + ptr.x * (12 + depth * 22);
-        const py = cy + y * spread * persp + ptr.y * (8 + depth * 16);
+        const persp = CAM / (CAM - t.z);
+        const x = cx + t.x * spread * persp + ptr.x * (18 + depth * 42);
+        const py = cy + y * spread * persp + ptr.y * (12 + depth * 30);
         const size = Math.max(11, (11 + depth * 14) * persp);
+        const flip = Math.abs(Math.cos(elapsed * t.flipSpeed + t.flip));
         ctx.save();
         ctx.translate(x, py);
+        ctx.scale(Math.max(0.06, flip), 1);
         ctx.rotate(t.tilt + Math.sin(elapsed * 0.5 + t.phase) * 0.06);
         ctx.font = "500 " + size.toFixed(1) + "px 'JetBrains Mono', ui-monospace, monospace";
         ctx.fillStyle = rgba(pal[t.tint], 0.08 + depth * 0.24);
@@ -175,8 +281,8 @@
           t.x = Math.random() * 2 - 1;
         }
       }
-      ptr.x += (ptr.tx - ptr.x) * 0.04;
-      ptr.y += (ptr.ty - ptr.y) * 0.04;
+      ptr.x += (ptr.tx - ptr.x) * 0.045;
+      ptr.y += (ptr.ty - ptr.y) * 0.045;
       draw();
       rafId = requestAnimationFrame(frame);
     };
