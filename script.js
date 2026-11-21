@@ -154,9 +154,11 @@
       addLine("I learn by building, care about community, and play guitar when offline.", "dim");
     },
     skills: () => {
-      addLine("ai_ml      : Generative AI, Machine Learning, Prompt Engineering, Gemini", "dim");
-      addLine("building   : AI Web Development, Web Development, Git & GitHub, Open Source", "dim");
-      addLine("leadership : Leadership, Entrepreneurship, Community Building, Communication");
+      addLine("ai_ml        : Generative AI, Machine Learning, Deep Learning, Prompt Engineering, RAG, Computer Vision", "dim");
+      addLine("models_tools : Gemma, Gemini, LoRA Fine-tuning, Hugging Face, Gradio, Google AI Studio, Git & GitHub", "dim");
+      addLine("web_build    : AI Web Development, Web Development, HTML/CSS, JavaScript, Python, SQL, Open Source", "dim");
+      addLine("core_cs      : Data Structures, Algorithms, OOP, DBMS, Problem Solving", "dim");
+      addLine("leadership   : Leadership, Entrepreneurship, Community Building, Public Speaking, Mentoring, Teamwork, Communication");
     },
     experience: () => {
       addLine("[2026.11] Google Student Ambassador — Google Student Ambassadors (India)", "dim");
