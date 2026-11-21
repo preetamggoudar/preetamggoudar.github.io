@@ -5,27 +5,6 @@
   "use strict";
 
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const root = document.documentElement;
-
-  /* ---------------- theme ---------------- */
-  const themeToggle = document.getElementById("theme-toggle");
-  const themeIcon = document.getElementById("theme-icon");
-  const themeLabel = document.getElementById("theme-label");
-  let savedTheme = "dark";
-  try { savedTheme = localStorage.getItem("portfolio-theme") || "dark"; } catch (e) {}
-  if (savedTheme !== "light" && savedTheme !== "dark") savedTheme = "dark";
-
-  const applyTheme = (theme) => {
-    root.dataset.theme = theme;
-    if (themeIcon) themeIcon.textContent = theme === "dark" ? "☾" : "☀";
-    if (themeLabel) themeLabel.textContent = theme === "dark" ? "Dark" : "Light";
-    if (themeToggle) themeToggle.setAttribute("aria-label", "Switch to " + (theme === "dark" ? "light" : "dark") + " theme");
-    try { localStorage.setItem("portfolio-theme", theme); } catch (e) {}
-  };
-  applyTheme(savedTheme);
-  if (themeToggle) {
-    themeToggle.addEventListener("click", () => applyTheme(root.dataset.theme === "dark" ? "light" : "dark"));
-  }
 
   /* ---------------- scroll progress + active nav ---------------- */
   const progress = document.getElementById("scroll-progress");
@@ -133,9 +112,7 @@
       });
     }
 
-    const palette = () => root.dataset.theme === "light"
-      ? [[12, 140, 105], [37, 99, 235], [147, 51, 234]]
-      : [[79, 209, 165], [91, 156, 255], [192, 132, 252]];
+    const palette = () => [[79, 209, 165], [91, 156, 255], [192, 132, 252]];
     const rgba = (c, a) => "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + a.toFixed(3) + ")";
 
     const rotate = (p, rx, ry, rz) => {
@@ -309,9 +286,7 @@
 
     resize();
     if (!reduceMotion) { draw(); start(); }
-    else if ("MutationObserver" in window) {
-      new MutationObserver(() => draw()).observe(root, { attributes: true, attributeFilter: ["data-theme"] });
-    }
+    else draw();
   })();
 
   /* ---------------- subtle 3D tilt on cards ---------------- */
@@ -380,7 +355,6 @@
     "contact     — ways to reach me",
     "open <name> — jump to a section",
     "ls          — list sections",
-    "theme dark|light — switch appearance",
     "date        — current date",
     "clear       — clear this output"
   ];
@@ -454,17 +428,6 @@
       } else {
         addLine("open: no such section: " + (args[0] || "(missing)"), true);
         addLine("Valid sections: " + SECTIONS.join(", "), true);
-      }
-      return;
-    }
-
-    if (key === "theme") {
-      const theme = (args[0] || "").toLowerCase();
-      if (theme === "dark" || theme === "light") {
-        applyTheme(theme);
-        addLine("Appearance set to " + theme + ".");
-      } else {
-        addLine("Usage: theme dark | light", true);
       }
       return;
     }
