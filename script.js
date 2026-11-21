@@ -78,8 +78,8 @@
     reveals.forEach((el, i) => { el.style.transitionDelay = (i % 3) * 70 + "ms"; io.observe(el); });
   }
 
-  /* ---------------- floating 3D shapes background ---------------- */
-  (function initShapes3D() {
+  /* ---------------- coding-themed 3D background ---------------- */
+  (function initCode3D() {
     const canvas = document.getElementById("bg-3d");
     if (!canvas) return;
     const ctx = canvas.getContext && canvas.getContext("2d");
@@ -89,101 +89,76 @@
     let rafId = 0, last = 0, elapsed = 0;
     const ptr = { x: 0, y: 0, tx: 0, ty: 0 };
 
-    // flat-edged wireframe solids — deliberately no spheres or globes
-    const cubeV = [[-1,-1,-1],[1,-1,-1],[1,1,-1],[-1,1,-1],[-1,-1,1],[1,-1,1],[1,1,1],[-1,1,1]];
-    const cubeE = [[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]];
-    const octV = [[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]];
-    const octE = [[0,2],[0,3],[0,4],[0,5],[1,2],[1,3],[1,4],[1,5],[2,4],[2,5],[3,4],[3,5]];
-    const tetV = [[1,1,1],[1,-1,-1],[-1,1,-1],[-1,-1,1]];
-    const tetE = [[0,1],[0,2],[0,3],[1,2],[1,3],[2,3]];
-    const ringV = [], ringE = [];
-    for (let i = 0; i < 40; i++) {
-      const a = (Math.PI * 2 * i) / 40;
-      ringV.push([Math.cos(a), Math.sin(a), 0]);
-      ringE.push([i, (i + 1) % 40]);
-    }
-    const GEOM = {
-      cube: { v: cubeV, e: cubeE },
-      octa: { v: octV, e: octE },
-      tetra: { v: tetV, e: tetE },
-      ring: { v: ringV, e: ringE }
-    };
-
-    const shapes = [
-      { g: "ring",  x: -0.82, y: -0.62, z: -0.85, s: 0.30, spin: [0.10, 0.16, 0.04], tint: 0, phase: 0.0 },
-      { g: "cube",  x:  0.86, y: -0.45, z: -0.35, s: 0.26, spin: [0.08, 0.13, 0.05], tint: 1, phase: 1.3 },
-      { g: "octa",  x: -0.88, y:  0.58, z:  0.15, s: 0.30, spin: [0.15, 0.09, 0.03], tint: 2, phase: 2.6 },
-      { g: "ring",  x:  0.78, y:  0.66, z: -0.70, s: 0.36, spin: [0.07, 0.14, 0.05], tint: 0, phase: 3.8 },
-      { g: "tetra", x:  0.10, y: -0.92, z: -1.00, s: 0.24, spin: [0.12, 0.19, 0.04], tint: 1, phase: 5.0 },
-      { g: "cube",  x:  0.02, y:  0.94, z: -0.90, s: 0.22, spin: [0.09, 0.11, 0.06], tint: 2, phase: 0.7 }
+    const TOKENS = [
+      "{ }", "</>", "=>", "const", "AI", "101", "λ", ";", "()", "[]",
+      "!=", "&&", "return", "import", "git", "0x", "#", "class", "async",
+      "</div>", "fn", "01", "->", "true", "while", "null"
     ];
-    shapes.forEach((sh) => { sh.rx = sh.phase; sh.ry = sh.phase * 0.7; sh.rz = 0; });
+    const tokens = TOKENS.map((text, i) => ({
+      text: text,
+      x: Math.random() * 2 - 1,
+      y: Math.random() * 2 - 1,
+      z: Math.random() * 1.8 - 1.2,
+      phase: Math.random() * Math.PI * 2,
+      tilt: (Math.random() - 0.5) * 0.18,
+      tint: i % 3
+    }));
+
+    // very faint character streams deep in the background
+    const GLYPHS = "01{}<>/[]=;+*#";
+    const streams = [];
+    for (let i = 0; i < 5; i++) {
+      streams.push({
+        x: (i + 0.5) / 5 + (Math.random() - 0.5) * 0.08,
+        speed: 22 + Math.random() * 20,
+        len: 7 + Math.floor(Math.random() * 6),
+        offset: Math.random() * 600
+      });
+    }
 
     const palette = () => root.dataset.theme === "light"
       ? [[12, 140, 105], [37, 99, 235], [147, 51, 234]]
       : [[79, 209, 165], [91, 156, 255], [192, 132, 252]];
     const rgba = (c, a) => "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + a.toFixed(3) + ")";
 
-    const rotate = (p, rx, ry, rz) => {
-      const cx = Math.cos(rx), sx = Math.sin(rx);
-      const y1 = p[1] * cx - p[2] * sx, z1 = p[1] * sx + p[2] * cx;
-      const cy = Math.cos(ry), sy = Math.sin(ry);
-      const x2 = p[0] * cy + z1 * sy, z2 = -p[0] * sy + z1 * cy;
-      const cz = Math.cos(rz), sz = Math.sin(rz);
-      return [x2 * cz - y1 * sz, x2 * sz + y1 * cz, z2];
-    };
-
     const draw = () => {
       ctx.clearRect(0, 0, w, h);
       const pal = palette();
-      const spread = Math.min(w, h) * 0.6;
-      const light = root.dataset.theme === "light";
+      const spread = Math.min(w, h) * 0.58;
+      const cx = w / 2, cy = h / 2;
 
-      for (let i = 0; i < shapes.length; i++) {
-        const sh = shapes[i];
-        const depth = (sh.z + 1) / 2;
-        const baseAlpha = light ? 0.08 + depth * 0.13 : 0.09 + depth * 0.15;
-        const px = sh.x + Math.sin(elapsed * 0.16 + sh.phase) * 0.035;
-        const py = sh.y + Math.cos(elapsed * 0.13 + sh.phase) * 0.045;
-        const par = 0.35 + depth * 0.65;
-        const ox = ptr.x * 22 * par;
-        const oy = ptr.y * 16 * par;
-        const geom = GEOM[sh.g];
-        const projected = [];
-
-        for (let k = 0; k < geom.v.length; k++) {
-          const q = rotate(geom.v[k], sh.rx, sh.ry, sh.rz);
-          const wx = px + q[0] * sh.s;
-          const wy = py + q[1] * sh.s;
-          const wz = sh.z + q[2] * sh.s * 0.5;
-          const persp = 4 / (4 - wz);
-          projected.push({
-            x: w / 2 + wx * spread * persp + ox,
-            y: h / 2 + wy * spread * persp + oy,
-            d: (q[2] + 1) / 2
-          });
+      // deep code streams
+      ctx.font = "500 12px 'JetBrains Mono', ui-monospace, monospace";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      for (let i = 0; i < streams.length; i++) {
+        const st = streams[i];
+        const col = pal[i % 2];
+        for (let k = 0; k < st.len; k++) {
+          const y = ((st.offset + elapsed * st.speed + k * 24) % (h + 240)) - 120;
+          const ch = GLYPHS[(k + i * 3 + Math.floor(elapsed * 1.5)) % GLYPHS.length];
+          ctx.fillStyle = rgba(col, 0.025 + (k / st.len) * 0.045);
+          ctx.fillText(ch, st.x * w, y);
         }
+      }
 
-        const col = pal[sh.tint];
-        ctx.lineWidth = 1;
-        for (let k = 0; k < geom.e.length; k++) {
-          const a = projected[geom.e[k][0]], b = projected[geom.e[k][1]];
-          ctx.strokeStyle = rgba(col, baseAlpha * (0.55 + a.d * 0.65));
-          ctx.beginPath();
-          ctx.moveTo(a.x, a.y);
-          ctx.lineTo(b.x, b.y);
-          ctx.stroke();
-        }
-
-        if (depth > 0.25) {
-          ctx.fillStyle = rgba(col, baseAlpha * 1.4);
-          for (let k = 0; k < projected.length; k += 2) {
-            const v = projected[k];
-            ctx.beginPath();
-            ctx.arc(v.x, v.y, 1 + v.d, 0, Math.PI * 2);
-            ctx.fill();
-          }
-        }
+      // floating syntax tokens at different depths
+      for (let i = 0; i < tokens.length; i++) {
+        const t = tokens[i];
+        const wy = t.y - elapsed * 0.012 + Math.sin(elapsed * 0.3 + t.phase) * 0.035;
+        const y = wy < -1.3 ? 1.3 : wy;
+        const depth = (t.z + 1.2) / 1.8;
+        const persp = 3.4 / (3.4 - t.z);
+        const x = cx + t.x * spread * persp + ptr.x * (12 + depth * 22);
+        const py = cy + y * spread * persp + ptr.y * (8 + depth * 16);
+        const size = Math.max(11, (11 + depth * 14) * persp);
+        ctx.save();
+        ctx.translate(x, py);
+        ctx.rotate(t.tilt + Math.sin(elapsed * 0.5 + t.phase) * 0.06);
+        ctx.font = "500 " + size.toFixed(1) + "px 'JetBrains Mono', ui-monospace, monospace";
+        ctx.fillStyle = rgba(pal[t.tint], 0.08 + depth * 0.24);
+        ctx.fillText(t.text, 0, 0);
+        ctx.restore();
       }
     };
 
@@ -192,11 +167,13 @@
       const dt = last ? Math.min((time - last) / 1000, 0.05) : 0.016;
       last = time;
       elapsed += dt;
-      for (let i = 0; i < shapes.length; i++) {
-        const sh = shapes[i];
-        sh.rx += dt * sh.spin[0];
-        sh.ry += dt * sh.spin[1];
-        sh.rz += dt * sh.spin[2];
+      for (let i = 0; i < tokens.length; i++) {
+        const t = tokens[i];
+        t.z += dt * 0.02;
+        if (t.z > 0.6) {
+          t.z = -1.2;
+          t.x = Math.random() * 2 - 1;
+        }
       }
       ptr.x += (ptr.tx - ptr.x) * 0.04;
       ptr.y += (ptr.ty - ptr.y) * 0.04;
@@ -205,7 +182,6 @@
     };
     const start = () => { if (!rafId && !reduceMotion) { last = 0; rafId = requestAnimationFrame(frame); } };
     const stop = () => { if (rafId) cancelAnimationFrame(rafId); rafId = 0; };
-
     const resize = () => {
       w = Math.max(window.innerWidth, 1);
       h = Math.max(window.innerHeight, 1);
