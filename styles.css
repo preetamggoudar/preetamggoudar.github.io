@@ -162,10 +162,10 @@ h1 { font-size: clamp(2.8rem, 5.6vw, 4.35rem); line-height: 1.05; margin: 26px 0
 .social-row svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 
 /* large, crisp poster-style cut-out beside the name */
-.hero-visual { position: relative; padding-top: 330px; }
+.hero-visual { position: relative; padding-top: 370px; }
 .cutout-3d {
   position: absolute; top: -4px; right: 22px; z-index: 3;
-  width: clamp(240px, 27vw, 330px); height: auto; margin: 0; pointer-events: none;
+  width: clamp(260px, 28vw, 360px); height: auto; margin: 0; pointer-events: none;
   image-rendering: -webkit-optimize-contrast;
 }
 
