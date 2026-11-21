@@ -1,20 +1,20 @@
 <!doctype html>
-<html lang="en" data-theme="green">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>PREETAM_OS — Preetam Goudar // AI Engineer</title>
-  <meta name="description" content="Interactive terminal portfolio of Preetam Goudar — AI/ML student, Google Student Ambassador 2026 and hackathon winner. Type help to explore.">
-  <meta name="theme-color" content="#040906">
+  <title>Preetam Goudar — AI &amp; ML Engineer | Portfolio</title>
+  <meta name="description" content="Portfolio of Preetam Goudar — Computer Science (AI & ML) student, Google Student Ambassador 2026 and builder of practical AI systems. Explore with the interactive shell.">
+  <meta name="theme-color" content="#0b0f16">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="PREETAM_OS — Preetam Goudar">
-  <meta property="og:description" content="An interactive terminal portfolio. Type help to explore.">
+  <meta property="og:title" content="Preetam Goudar — AI &amp; ML Engineer">
+  <meta property="og:description" content="Computer Science (AI & ML) student, Google Student Ambassador 2026 and builder of practical AI systems.">
   <meta property="og:url" content="https://preetamggoudar.github.io/">
   <meta property="og:image" content="https://avatars.githubusercontent.com/u/339833513?v=4">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%23040906'/%3E%3Ctext x='9' y='44' font-family='monospace' font-size='34' font-weight='700' fill='%237dff9b'%3E%26gt;_%3C/text%3E%3C/svg%3E">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b0f16'/%3E%3Ctext x='32' y='43' font-family='Arial,sans-serif' font-size='30' font-weight='700' text-anchor='middle' fill='%234fd1a5'%3EPG%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=VT323&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <script type="application/ld+json">
     {
@@ -24,7 +24,7 @@
       "url": "https://preetamggoudar.github.io/",
       "image": "https://avatars.githubusercontent.com/u/339833513?v=4",
       "jobTitle": "Computer Science (AI & ML) Student",
-      "description": "Aspiring AI engineer, Google Student Ambassador 2026 and hackathon winner from Bengaluru, India.",
+      "description": "AI and machine learning student, Google Student Ambassador 2026 and hackathon winner from Bengaluru, India.",
       "address": { "@type": "PostalAddress", "addressLocality": "Bengaluru", "addressRegion": "Karnataka", "addressCountry": "IN" },
       "sameAs": [
         "https://www.linkedin.com/in/preetam-goudar-181174324",
@@ -34,99 +34,79 @@
   </script>
 </head>
 <body>
-  <!-- CRT effects -->
-  <div class="crt-overlay" aria-hidden="true"></div>
-  <div class="crt-vignette" aria-hidden="true"></div>
-
-  <!-- boot sequence -->
-  <div class="boot" id="boot" aria-hidden="true">
-    <div class="boot-inner">
-      <pre class="boot-logo">  ____  ____  ____  ____  __  __  ___  ____  __  __  _  _
- |  _ \|  _ \|  _ \| __ )|  \/  |/ _ \|  _ \|  \/  |/ \| |
- | |_) | |_) | | | |  _ \| |\/| | | | | |_) | |\/| | | | |
- |  __/|  __/| |_| | |_) | |  | | |_| |  _ <| |  | | |_| |
- |_|   |_|   |____/|____/|_|  |_|\___/|_| \_\_|  |_|\___/</pre>
-      <div class="boot-lines" id="boot-lines">
-        <div>BIOS v1.0.26 — PREETAM_OS</div>
-        <div>Mounting /dev/portfolio .............. [ OK ]</div>
-        <div>Loading profile.dat ................. [ OK ]</div>
-        <div>Connecting to LinkedIn .............. [ OK ]</div>
-        <div>Initialising AI modules ............. [ OK ]</div>
-        <div class="boot-ready">&gt; SYSTEM READY. Launching shell<span class="cursor-block"></span></div>
-      </div>
-      <button class="boot-skip" id="boot-skip" type="button">[ SKIP INTRO ]</button>
-    </div>
-  </div>
-
-  <!-- top status bar -->
-  <header class="topbar" id="top">
-    <div class="container topbar-inner">
-      <a class="brand" href="#home" aria-label="PREETAM_OS home">PG<span class="brand-path">:~$</span></a>
-      <div class="topbar-title">PREETAM_OS <span class="dim">/ v1.0.26</span></div>
-      <div class="topbar-right">
-        <span class="live-dot" aria-hidden="true"></span>
-        <span class="online">ONLINE</span>
-        <span class="clock" id="clock">--:--:--</span>
-        <span class="scroll-pct" id="scroll-pct">000%</span>
-      </div>
-      <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open navigation">
-        <span></span><span></span><span></span>
-      </button>
+  <header class="site-header" id="top">
+    <div class="container nav-wrap">
+      <a class="brand" href="#home" aria-label="Preetam Goudar — home">
+        <span class="brand-mark">PG</span><span class="brand-slash">/</span><span class="brand-sub">portfolio</span>
+      </a>
       <nav class="nav" id="primary-nav" aria-label="Primary navigation">
-        <a href="#about">01.about</a>
-        <a href="#skills">02.skills</a>
-        <a href="#experience">03.log</a>
-        <a href="#projects">04.projects</a>
-        <a href="#contact">05.contact</a>
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#experience">Experience</a>
+        <a href="#education">Education</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
       </nav>
+      <div class="header-actions">
+        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme">
+          <span id="theme-icon" aria-hidden="true">☾</span><span id="theme-label">Dark</span>
+        </button>
+        <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open navigation">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
     </div>
+    <div class="scroll-progress" aria-hidden="true"><span id="scroll-progress"></span></div>
   </header>
-
-  <div class="ticker" aria-hidden="true">
-    <div class="ticker-track">
-      <span>◆ SYSTEM ONLINE</span><span>◆ GOOGLE STUDENT AMBASSADOR 2026</span><span>◆ 1ST PLACE — HACK DAY 2026</span><span>◆ BUILDING AI THAT HELPS PEOPLE</span><span>◆ TYPE `HELP` IN THE TERMINAL</span>
-      <span>◆ SYSTEM ONLINE</span><span>◆ GOOGLE STUDENT AMBASSADOR 2026</span><span>◆ 1ST PLACE — HACK DAY 2026</span><span>◆ BUILDING AI THAT HELPS PEOPLE</span><span>◆ TYPE `HELP` IN THE TERMINAL</span>
-    </div>
-  </div>
 
   <main>
     <!-- HERO -->
     <section class="hero" id="home">
       <div class="container hero-grid">
-        <div class="hero-main">
-          <p class="prompt-line reveal"><span class="prompt">visitor@preetam_os:~$</span> cat intro.txt</p>
-          <p class="intro-output reveal">&gt; Loading human profile... success.<br>&gt; Role: builder of useful things.</p>
-          <h1 class="reveal">HELLO, WORLD.<br><span class="accent">I'M PREETAM.</span><span class="cursor-block" aria-hidden="true"></span></h1>
-          <p class="hero-role reveal"><span class="accent">&gt;</span> Aspiring AI Engineer <span class="sep">/</span> GenAI Builder <span class="sep">/</span> Community Leader</p>
-          <p class="hero-desc reveal">CSE (AI &amp; ML) student in the upGrad School of Technology × Shri Siddhartha Institute of Technology programme, Google Student Ambassador 2026, and someone who believes the best way to learn is to build. This isn't a normal portfolio — it's a shell. Type <span class="accent">help</span> to explore.</p>
-          <div class="hero-actions reveal">
-            <a class="term-btn primary" href="#projects">[ RUN ./projects ]</a>
-            <a class="term-btn" href="#contact">[ OPEN CONTACT ]</a>
+        <div class="hero-copy">
+          <div class="availability reveal"><span class="pulse" aria-hidden="true"></span> Available for opportunities &nbsp;·&nbsp; Bengaluru, India</div>
+          <h1 class="reveal">Preetam Goudar<span class="accent">.</span></h1>
+          <p class="hero-tagline reveal">AI &amp; ML engineer-in-training, building practical systems at the intersection of models, web and community.</p>
+          <div class="hero-highlights reveal">
+            <span>Google Student Ambassador 2026</span>
+            <span>Hackathon winner</span>
+            <span>Open source &amp; community</span>
           </div>
-          <div class="hero-meta reveal">
-            <span>STATUS: OPEN TO COLLABS</span><span>LOC: BENGALURU, IN</span><span>BUILD: 2026.11</span>
+          <div class="hero-actions reveal">
+            <a class="btn btn-primary" href="#projects">View projects <span aria-hidden="true">↗</span></a>
+            <a class="btn btn-secondary" href="#contact">Get in touch <span aria-hidden="true">→</span></a>
+          </div>
+          <div class="social-row reveal" aria-label="Social links">
+            <a href="https://www.linkedin.com/in/preetam-goudar-181174324" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 8.5v9M6.5 5.2v.1M10.5 17.5v-5c0-1.7 1.3-3 3-3s3 1.3 3 3v5M10.5 12.5v5"/><rect x="2.5" y="2.5" width="19" height="19" rx="4"/></svg>
+              LinkedIn
+            </a>
+            <a href="https://github.com/preetamggoudar" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19.5c-4.5 1.3-4.5-2.3-6.3-2.8m12.6 5.3v-3.4a3 3 0 0 0-.8-2.3c2.7-.3 5.5-1.3 5.5-6a4.7 4.7 0 0 0-1.3-3.2 4.3 4.3 0 0 0-.1-3.2s-1-.3-3.4 1.2a11.6 11.6 0 0 0-6 0C6.2 2.9 5.2 3.2 5.2 3.2a4.3 4.3 0 0 0-.1 3.2 4.7 4.7 0 0 0-1.3 3.2c0 4.7 2.8 5.7 5.5 6a3 3 0 0 0-.8 2.3v3.4"/></svg>
+              GitHub
+            </a>
           </div>
         </div>
 
-        <aside class="window hero-terminal reveal" aria-label="Interactive terminal">
-          <div class="window-bar">
-            <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
-            <span class="window-title">preetam@portfolio — ~/shell</span>
-            <span class="window-badge">TTY1</span>
+        <aside class="console reveal" aria-label="Interactive shell">
+          <div class="console-bar">
+            <span class="console-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span class="console-title">interactive shell</span>
+            <span class="console-hint">try <code>help</code></span>
           </div>
-          <div class="term-output" id="term-output" role="log" aria-live="polite" aria-label="Terminal output">
-            <div class="term-line"><span class="prompt">preetam@portfolio:~$</span> ./welcome</div>
-            <div class="term-line dim">Welcome to PREETAM_OS interactive shell.</div>
-            <div class="term-line dim">Type <span class="accent">help</span> for commands or click one below.</div>
-            <div class="term-line">&nbsp;</div>
+          <div class="console-output" id="term-output" role="log" aria-live="polite" aria-label="Terminal output">
+            <div class="line muted">Welcome. This portfolio has a small shell — type a command to explore.</div>
+            <div class="line"><span class="prompt">$</span> help</div>
+            <div class="line muted">Available: about, skills, experience, projects, contact, open, theme, clear.</div>
+            <div class="line">&nbsp;</div>
           </div>
-          <form class="term-input-row" id="term-form" autocomplete="off">
-            <label class="prompt" for="term-input">preetam@portfolio:~$</label>
-            <input id="term-input" name="command" type="text" spellcheck="false" autocomplete="off" autocapitalize="off" placeholder="type a command..." aria-label="Terminal command input">
-            <span class="cursor-block" aria-hidden="true"></span>
+          <form class="console-input" id="term-form" autocomplete="off">
+            <label class="prompt" for="term-input" aria-label="Command prompt">$</label>
+            <input id="term-input" name="command" type="text" spellcheck="false" autocomplete="off" autocapitalize="off" placeholder="type a command…" aria-label="Terminal command input">
+            <button type="submit" aria-label="Run command">↵</button>
           </form>
-          <div class="quick-commands" aria-label="Quick commands">
-            <button type="button" data-cmd="help">help</button>
+          <div class="console-quick" aria-label="Quick commands">
+            <button type="button" data-cmd="about">about</button>
             <button type="button" data-cmd="skills">skills</button>
             <button type="button" data-cmd="projects">projects</button>
             <button type="button" data-cmd="contact">contact</button>
@@ -134,11 +114,11 @@
         </aside>
       </div>
 
-      <div class="container hero-stats reveal">
-        <div class="stat"><span class="stat-key">[ ACHIEVEMENT ]</span><strong>1ST PLACE</strong><span class="stat-val">Hack Day 2026 · Team SnakeByte</span></div>
-        <div class="stat"><span class="stat-key">[ PRIZE ]</span><strong>₹7,000</strong><span class="stat-val">Won at Hacktoberfest Hack Day</span></div>
-        <div class="stat"><span class="stat-key">[ ROLE ]</span><strong>GSA '26</strong><span class="stat-val">Google Student Ambassador</span></div>
-        <div class="stat"><span class="stat-key">[ FOCUS ]</span><strong>AI / ML</strong><span class="stat-val">Computer Science engineering</span></div>
+      <div class="container stats reveal" aria-label="Highlights">
+        <div class="stat"><span class="stat-label">Achievement</span><strong>1st Place</strong><span>Hack Day 2026 · Team SnakeByte</span></div>
+        <div class="stat"><span class="stat-label">Prize</span><strong>₹7,000</strong><span>Hacktoberfest Hack Day</span></div>
+        <div class="stat"><span class="stat-label">Role</span><strong>Ambassador</strong><span>Google Student Ambassador '26</span></div>
+        <div class="stat"><span class="stat-label">Focus</span><strong>AI / ML</strong><span>Computer Science engineering</span></div>
       </div>
     </section>
 
@@ -146,46 +126,29 @@
     <section class="section" id="about">
       <div class="container">
         <div class="section-head reveal">
-          <span class="section-tag">$ cat 01_about.txt</span>
-          <h2><span class="accent">//</span> ABOUT_ME</h2>
+          <span class="eyebrow mono">01 &nbsp;/&nbsp; About</span>
+          <h2>Building at the intersection of AI, web and people.</h2>
         </div>
         <div class="about-grid">
-          <div class="window code-window reveal">
-            <div class="window-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="window-title">01_about.txt</span><span class="window-badge">UTF-8</span></div>
-            <div class="code-body">
-              <p><span class="ln">01</span><span class="kw">const</span> name = <span class="str">"Preetam Goudar"</span>;</p>
-              <p><span class="ln">02</span><span class="kw">const</span> location = <span class="str">"Bengaluru, India"</span>;</p>
-              <p><span class="ln">03</span><span class="kw">const</span> degree = <span class="str">"B.E. CSE (AI &amp; ML)"</span>;</p>
-              <p><span class="ln">04</span><span class="kw">const</span> college = <span class="str">"upGrad × Shri Siddhartha Institute of Technology"</span>;</p>
-              <p><span class="ln">05</span>&nbsp;</p>
-              <p><span class="ln">06</span><span class="cm">// current mission</span></p>
-              <p><span class="ln">07</span>mission = <span class="str">"Learn fast, build things that help people,"</span></p>
-              <p><span class="ln">08</span>          <span class="str">"and bring others along for the ride."</span></p>
-              <p><span class="ln">09</span>&nbsp;</p>
-              <p><span class="ln">10</span><span class="cm">// outside the terminal</span></p>
-              <p><span class="ln">11</span>hobbies.push(<span class="str">"guitar"</span>, <span class="str">"hackathons"</span>, <span class="str">"community"</span>);</p>
-              <p><span class="ln">12</span><span class="cursor-block" aria-hidden="true"></span></p>
+          <div class="card prose reveal">
+            <p>I'm <strong>Preetam Goudar</strong>, a Computer Science student specialising in Artificial Intelligence and Machine Learning at <strong>Shri Siddhartha Institute of Technology</strong>, in collaboration with <strong>upGrad School of Technology</strong> (Batch 2026–2030).</p>
+            <p>I'm most interested in turning model experiments into things people can actually use — from vision-based extraction systems to AI web apps. I learn fastest by shipping, and I care just as much about the people around the technology as the technology itself.</p>
+            <p>As a <strong>Google Student Ambassador 2026</strong>, I help students explore Gemini and Google's AI ecosystem through peer-learning sessions and hands-on events. Away from the screen, I play guitar and spend time with the hackathon community.</p>
+            <div class="pill-row">
+              <span>Practical AI</span><span>Community-first</span><span>Learn in public</span><span>Problem solving</span>
             </div>
           </div>
-          <div class="about-side">
-            <div class="window mini-window reveal">
-              <div class="window-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="window-title">status.sys</span></div>
-              <div class="mini-body">
-                <div class="meter"><span>CURIOSITY</span><div class="bar"><i style="width:100%"></i></div><b>100%</b></div>
-                <div class="meter"><span>IDEAS</span><div class="bar"><i style="width:94%"></i></div><b>94%</b></div>
-                <div class="meter"><span>COFFEE</span><div class="bar"><i style="width:78%"></i></div><b>78%</b></div>
-                <div class="meter"><span>SLEEP</span><div class="bar"><i style="width:22%"></i></div><b>22%</b></div>
-              </div>
-            </div>
-            <div class="window mini-window reveal">
-              <div class="window-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="window-title">README.md</span></div>
-              <div class="mini-body prose">
-                <p><span class="accent">##</span> Mindset</p>
-                <p>The best way to understand technology is to use it to solve real problems — and to learn in public while doing it.</p>
-                <p class="dim">&gt; currently accepting collaborations, hackathon invites and good conversations.</p>
-              </div>
-            </div>
-          </div>
+          <aside class="card fact-card reveal">
+            <h3>At a glance</h3>
+            <dl>
+              <div><dt>Based in</dt><dd>Bengaluru, Karnataka</dd></div>
+              <div><dt>Programme</dt><dd>B.E. Computer Science (AI &amp; ML)</dd></div>
+              <div><dt>Institute</dt><dd>SSIT × upGrad School of Technology</dd></div>
+              <div><dt>Currently</dt><dd>Google Student Ambassador</dd></div>
+              <div><dt>Interested in</dt><dd>GenAI, Computer Vision, Web AI</dd></div>
+              <div><dt>Outside work</dt><dd>Guitar, hackathons, community</dd></div>
+            </dl>
+          </aside>
         </div>
       </div>
     </section>
@@ -194,81 +157,85 @@
     <section class="section section-alt" id="skills">
       <div class="container">
         <div class="section-head reveal">
-          <span class="section-tag">$ cat 02_skills.json</span>
-          <h2><span class="accent">//</span> SKILLS.JSON</h2>
+          <span class="eyebrow mono">02 &nbsp;/&nbsp; Skills</span>
+          <h2>Tools and skills I work with.</h2>
+          <p class="section-sub">A practical stack spanning AI, engineering fundamentals and community leadership.</p>
         </div>
-        <div class="window json-window reveal">
-          <div class="window-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="window-title">02_skills.json</span><span class="window-badge">VALID</span></div>
-          <div class="json-body">
-            <div class="json-row"><span class="brace">{</span></div>
-            <div class="json-group">
-              <div class="json-key"><span class="quote">"ai_ml"</span>: <span class="brace">[</span></div>
-              <div class="chips"><span>Generative AI</span><span>Machine Learning</span><span>Deep Learning</span><span>Prompt Engineering</span><span>RAG</span><span>Computer Vision</span></div>
-              <div class="json-key"><span class="brace">],</span></div>
-            </div>
-            <div class="json-group">
-              <div class="json-key"><span class="quote">"models_tools"</span>: <span class="brace">[</span></div>
-              <div class="chips"><span>Gemma</span><span>Gemini</span><span>LoRA Fine-tuning</span><span>Hugging Face</span><span>Gradio</span><span>Google AI Studio</span><span>Git &amp; GitHub</span></div>
-              <div class="json-key"><span class="brace">],</span></div>
-            </div>
-            <div class="json-group">
-              <div class="json-key"><span class="quote">"web_build"</span>: <span class="brace">[</span></div>
-              <div class="chips"><span>AI Web Development</span><span>Web Development</span><span>HTML / CSS</span><span>JavaScript</span><span>Python</span><span>SQL</span><span>Open Source</span></div>
-              <div class="json-key"><span class="brace">],</span></div>
-            </div>
-            <div class="json-group">
-              <div class="json-key"><span class="quote">"core_cs"</span>: <span class="brace">[</span></div>
-              <div class="chips"><span>Data Structures</span><span>Algorithms</span><span>OOP</span><span>DBMS</span><span>Problem Solving</span></div>
-              <div class="json-key"><span class="brace">],</span></div>
-            </div>
-            <div class="json-group">
-              <div class="json-key"><span class="quote">"leadership"</span>: <span class="brace">[</span></div>
-              <div class="chips"><span>Leadership</span><span>Entrepreneurship</span><span>Community Building</span><span>Public Speaking</span><span>Mentoring</span><span>Teamwork</span><span>Communication</span></div>
-              <div class="json-key"><span class="brace">]</span></div>
-            </div>
-            <div class="json-row"><span class="brace">}</span><span class="cursor-block" aria-hidden="true"></span></div>
-          </div>
+        <div class="skill-grid">
+          <article class="card skill-card reveal">
+            <span class="skill-index mono">01</span>
+            <h3>AI &amp; Machine Learning</h3>
+            <p>Designing and applying models for real problems.</p>
+            <div class="chips"><span>Generative AI</span><span>Machine Learning</span><span>Deep Learning</span><span>Prompt Engineering</span><span>RAG</span><span>Computer Vision</span></div>
+          </article>
+          <article class="card skill-card reveal">
+            <span class="skill-index mono">02</span>
+            <h3>Models &amp; Tools</h3>
+            <p>Frameworks and platforms used in current work.</p>
+            <div class="chips"><span>Gemma</span><span>Gemini</span><span>LoRA Fine-tuning</span><span>Hugging Face</span><span>Gradio</span><span>Google AI Studio</span><span>Git &amp; GitHub</span></div>
+          </article>
+          <article class="card skill-card reveal">
+            <span class="skill-index mono">03</span>
+            <h3>Web &amp; Development</h3>
+            <p>Building interfaces and the logic behind them.</p>
+            <div class="chips"><span>AI Web Development</span><span>Web Development</span><span>HTML / CSS</span><span>JavaScript</span><span>Python</span><span>SQL</span><span>Open Source</span></div>
+          </article>
+          <article class="card skill-card reveal">
+            <span class="skill-index mono">04</span>
+            <h3>Computer Science Core</h3>
+            <p>The fundamentals behind the build.</p>
+            <div class="chips"><span>Data Structures</span><span>Algorithms</span><span>OOP</span><span>DBMS</span><span>Problem Solving</span></div>
+          </article>
+          <article class="card skill-card reveal">
+            <span class="skill-index mono">05</span>
+            <h3>Leadership &amp; Communication</h3>
+            <p>Bringing people together around ideas.</p>
+            <div class="chips"><span>Leadership</span><span>Entrepreneurship</span><span>Community Building</span><span>Public Speaking</span><span>Mentoring</span><span>Teamwork</span><span>Communication</span></div>
+          </article>
         </div>
       </div>
     </section>
 
-    <!-- EXPERIENCE LOG -->
+    <!-- EXPERIENCE -->
     <section class="section" id="experience">
       <div class="container">
         <div class="section-head reveal">
-          <span class="section-tag">$ tail -f 03_experience.log</span>
-          <h2><span class="accent">//</span> ACTIVITY_LOG</h2>
+          <span class="eyebrow mono">03 &nbsp;/&nbsp; Experience</span>
+          <h2>Experience &amp; leadership.</h2>
+          <p class="section-sub">Roles, competitions and moments that shaped how I build and lead.</p>
         </div>
-        <div class="log-list">
-          <article class="log-entry reveal">
-            <div class="log-meta"><span class="log-time">[2026.11 — NOW]</span><span class="log-level info">INFO</span></div>
-            <h3>Google Student Ambassador <span class="cursor-block tiny" aria-hidden="true"></span></h3>
-            <p class="log-org">↳ Google Student Ambassadors (India)</p>
-            <p>Selected for the nationwide 2026 cohort (GID 16723). Championing Google's AI ecosystem — especially Gemini — on campus through peer-learning sessions, hands-on events and knowledge sharing.</p>
+        <div class="timeline">
+          <article class="timeline-item reveal">
+            <div class="timeline-date">Nov 2026 — Present</div>
+            <div class="card timeline-card">
+              <div class="timeline-head"><h3>Google Student Ambassador</h3><span class="tag">Leadership</span></div>
+              <p class="org">Google Student Ambassadors (India)</p>
+              <p>Selected for the nationwide 2026 cohort (GID 16723). Champion Google's AI ecosystem — especially Gemini — on campus through peer-learning sessions, hands-on events and knowledge sharing.</p>
+            </div>
           </article>
-          <article class="log-entry reveal">
-            <div class="log-meta"><span class="log-time">[2026.10.24]</span><span class="log-level win">WIN</span></div>
-            <h3>1st Place — Hack Day, Team SnakeByte</h3>
-            <p class="log-org">↳ Hacktoberfest 2026 · MLH × DEV · DigitalOcean · Tumakuru</p>
-            <p>Built, collaborated and shipped under pressure — and took first place with a ₹7,000 prize. A day of ideas, teamwork and celebrating what a focused team can do.</p>
+          <article class="timeline-item reveal">
+            <div class="timeline-date">Oct 2026</div>
+            <div class="card timeline-card">
+              <div class="timeline-head"><h3>1st Place — Hack Day, Team SnakeByte</h3><span class="tag tag-accent">Winner</span></div>
+              <p class="org">Hacktoberfest 2026 · MLH × DEV · DigitalOcean · Tumakuru</p>
+              <p>Built, collaborated and shipped under pressure with Team SnakeByte, taking first place and a ₹7,000 prize at a day-long hackathon with the developer community.</p>
+            </div>
           </article>
-          <article class="log-entry reveal">
-            <div class="log-meta"><span class="log-time">[2026.09.15]</span><span class="log-level event">EVENT</span></div>
-            <h3>Smart India Hackathon 2026</h3>
-            <p class="log-org">↳ upGrad School of Technology</p>
-            <p>Joined passionate peers around innovative ideas and solutions with real-world impact. Energy, teamwork and a lot of learning in one room.</p>
+          <article class="timeline-item reveal">
+            <div class="timeline-date">Sep 2026</div>
+            <div class="card timeline-card">
+              <div class="timeline-head"><h3>Smart India Hackathon 2026</h3><span class="tag">Hackathon</span></div>
+              <p class="org">upGrad School of Technology</p>
+              <p>Worked with passionate peers around innovative ideas and solutions with real-world impact — a day of energy, teamwork and fast learning.</p>
+            </div>
           </article>
-          <article class="log-entry reveal">
-            <div class="log-meta"><span class="log-time">[2026.09.10]</span><span class="log-level event">EVENT</span></div>
-            <h3>"Vision Meets Execution" — Ronnie Screwvala</h3>
-            <p class="log-org">↳ upGrad School of Technology</p>
-            <p>A session with the entrepreneur, investor and upGrad co-founder on innovation, leadership and turning ideas into action.</p>
-          </article>
-          <article class="log-entry reveal">
-            <div class="log-meta"><span class="log-time">[2026.09.10]</span><span class="log-level boot">BOOT</span></div>
-            <h3>B.E. journey begins</h3>
-            <p class="log-org">↳ upGrad School of Technology × Shri Siddhartha Institute of Technology · Batch 2026–2030</p>
-            <p>New chapter, new people, new challenges. Four years of Computer Science specialising in AI &amp; ML — officially underway.</p>
+          <article class="timeline-item reveal">
+            <div class="timeline-date">Sep 2026</div>
+            <div class="card timeline-card">
+              <div class="timeline-head"><h3>"Vision Meets Execution" — Ronnie Screwvala</h3><span class="tag">Learning</span></div>
+              <p class="org">upGrad School of Technology</p>
+              <p>Attended a session with the entrepreneur, investor and upGrad co-founder on innovation, leadership and turning ideas into action.</p>
+            </div>
           </article>
         </div>
       </div>
@@ -278,21 +245,18 @@
     <section class="section section-alt" id="education">
       <div class="container">
         <div class="section-head reveal">
-          <span class="section-tag">$ cat 04_education.cfg</span>
-          <h2><span class="accent">//</span> EDUCATION.CFG</h2>
+          <span class="eyebrow mono">04 &nbsp;/&nbsp; Education</span>
+          <h2>Education.</h2>
         </div>
-        <div class="config-grid single">
-          <div class="window config-window reveal">
-            <div class="window-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="window-title">university.cfg</span></div>
-            <div class="config-body">
-              <p><span class="section-cfg">[university]</span></p>
-              <p><span class="cfg-key">degree</span> = <span class="cfg-val">"B.E. Computer Science (AI &amp; ML)"</span></p>
-              <p><span class="cfg-key">institute</span> = <span class="cfg-val">"Shri Siddhartha Institute of Technology"</span></p>
-              <p><span class="cfg-key">partner</span> = <span class="cfg-val">"upGrad School of Technology (collaboration)"</span></p>
-              <p><span class="cfg-key">period</span> = <span class="cfg-val">"2026 – 2030"</span></p>
-              <p><span class="cfg-key">status</span> = <span class="cfg-good">IN_PROGRESS</span></p>
-            </div>
+        <div class="card education-card reveal">
+          <div class="edu-top">
+            <span class="edu-badge" aria-hidden="true">◆</span>
+            <span class="edu-period">2026 — 2030</span>
           </div>
+          <h3>Bachelor of Engineering, Computer Science (AI &amp; ML)</h3>
+          <p class="edu-institute">Shri Siddhartha Institute of Technology</p>
+          <p class="edu-note">Collaborative programme with <strong>upGrad School of Technology</strong>. Currently in progress, with a focus on artificial intelligence and machine learning.</p>
+          <div class="pill-row"><span>AI &amp; Machine Learning</span><span>Engineering</span><span>Batch 2026–2030</span></div>
         </div>
       </div>
     </section>
@@ -301,29 +265,24 @@
     <section class="section" id="projects">
       <div class="container">
         <div class="section-head reveal">
-          <span class="section-tag">$ ls -la ~/projects</span>
-          <h2><span class="accent">//</span> PROJECTS_DIR</h2>
+          <span class="eyebrow mono">05 &nbsp;/&nbsp; Projects</span>
+          <h2>Selected work.</h2>
+          <p class="section-sub">Hackathon builds and ongoing experiments in AI and the web.</p>
         </div>
-        <div class="project-list">
-          <article class="window project-window reveal">
-            <div class="window-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="window-title">~/projects/campusclaim</span><span class="window-badge featured">FEATURED</span></div>
-            <div class="project-body">
-              <p class="file-perms">drwxr-xr-x &nbsp;preetam &nbsp;team &nbsp;campusclaim/ &nbsp;<span class="accent">← featured team project</span></p>
-              <h3>CAMPUSCLAIM</h3>
-              <p>Receipt-to-reimbursement assistant for campus events. Fine-tuned a Gemma 4 vision model to extract company, date, address and total from receipts, then wired up a Gradio app for review, pre-filling and claim drafting — with policy retrieval in the combined approach.</p>
-              <div class="chips"><span>Gemma 4</span><span>Vision Fine-tuning</span><span>Gradio</span><span>RAG</span></div>
-              <a class="term-btn primary small" href="https://github.com/sank8-2/campusclaim" target="_blank" rel="noopener noreferrer">[ ./open_repo ]</a>
-            </div>
+        <div class="project-grid">
+          <article class="card project-card featured reveal">
+            <div class="project-top"><span class="project-label">Featured team project</span><span class="project-arrow" aria-hidden="true">↗</span></div>
+            <h3>CampusClaim</h3>
+            <p>Receipt-to-reimbursement assistant for campus events. Fine-tuned a Gemma 4 vision model to extract company, date, address and total from receipts, then built a Gradio interface for review, pre-filling and claim drafting — with policy retrieval in the combined approach.</p>
+            <div class="chips"><span>Gemma 4</span><span>Vision Fine-tuning</span><span>Gradio</span><span>RAG</span></div>
+            <a class="text-link" href="https://github.com/sank8-2/campusclaim" target="_blank" rel="noopener noreferrer">View repository <span aria-hidden="true">→</span></a>
           </article>
-          <article class="window project-window reveal">
-            <div class="window-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="window-title">~/projects/building_in_public</span></div>
-            <div class="project-body">
-              <p class="file-perms">drwxr-xr-x &nbsp;preetam &nbsp;user &nbsp;experiments/ &nbsp;<span class="dim">← ongoing</span></p>
-              <h3>BUILDING IN PUBLIC</h3>
-              <p>Exploring open source through Hacktoberfest and shipping small experiments on GitHub. Every build is a chance to learn a new tool, write better code and share what works.</p>
-              <div class="chips"><span>Open Source</span><span>GitHub</span><span>AI Web Apps</span></div>
-              <a class="term-btn small" href="https://github.com/preetamggoudar" target="_blank" rel="noopener noreferrer">[ ./open_github ]</a>
-            </div>
+          <article class="card project-card reveal">
+            <div class="project-top"><span class="project-label">Ongoing</span><span class="project-arrow" aria-hidden="true">↗</span></div>
+            <h3>Building in public</h3>
+            <p>Exploring open source through Hacktoberfest and shipping small experiments on GitHub. Every build is a chance to learn a new tool, write better code and share what works.</p>
+            <div class="chips"><span>Open Source</span><span>GitHub</span><span>AI Web Apps</span></div>
+            <a class="text-link" href="https://github.com/preetamggoudar" target="_blank" rel="noopener noreferrer">See my GitHub <span aria-hidden="true">→</span></a>
           </article>
         </div>
       </div>
@@ -332,29 +291,24 @@
     <!-- CONTACT -->
     <section class="section contact-section" id="contact">
       <div class="container">
-        <div class="window contact-window reveal">
-          <div class="window-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="window-title">05_connect.sh</span><span class="window-badge">READY</span></div>
-          <div class="contact-body">
-            <span class="section-tag">$ ./connect.sh --open</span>
-            <h2>LET'S BUILD<br><span class="accent">SOMETHING REAL.</span></h2>
-            <p>Open to collaborations, hackathons and conversations about AI, community or the next big idea. Run a command below to reach me.</p>
-            <div class="contact-commands">
-              <a href="https://www.linkedin.com/in/preetam-goudar-181174324" target="_blank" rel="noopener noreferrer"><span class="accent">$</span> ./connect --linkedin <span class="arrow">↗</span></a>
-              <a href="https://github.com/preetamggoudar" target="_blank" rel="noopener noreferrer"><span class="accent">$</span> ./connect --github <span class="arrow">↗</span></a>
-            </div>
-            <p class="cursor-line"><span class="prompt">preetam@portfolio:~$</span> <span class="cursor-block" aria-hidden="true"></span></p>
+        <div class="card contact-card reveal">
+          <span class="eyebrow mono">06 &nbsp;/&nbsp; Contact</span>
+          <h2>Let's build something meaningful.</h2>
+          <p>Open to collaborations, hackathons and conversations about AI, product or community. The easiest way to reach me is LinkedIn or GitHub.</p>
+          <div class="contact-actions">
+            <a class="btn btn-primary" href="https://www.linkedin.com/in/preetam-goudar-181174324" target="_blank" rel="noopener noreferrer">Message on LinkedIn <span aria-hidden="true">↗</span></a>
+            <a class="btn btn-secondary" href="https://github.com/preetamggoudar" target="_blank" rel="noopener noreferrer">Follow on GitHub <span aria-hidden="true">↗</span></a>
           </div>
         </div>
       </div>
     </section>
   </main>
 
-  <footer class="statusbar">
-    <div class="container statusbar-inner">
-      <span>PREETAM_OS v1.0.26</span>
-      <span class="hide-small">© <span id="year">2026</span> PREETAM GOUDAR</span>
-      <span class="hide-small">CONNECTION: <span class="accent">SECURE</span></span>
-      <a href="#top">[ BACK TO TOP ↑ ]</a>
+  <footer class="site-footer">
+    <div class="container footer-wrap">
+      <span>© <span id="year">2026</span> Preetam Goudar</span>
+      <span class="footer mono">$ built with care · deployed on GitHub Pages</span>
+      <a href="#top">Back to top ↑</a>
     </div>
   </footer>
 
