@@ -2,24 +2,24 @@
    Preetam Goudar — polished console portfolio
    ========================================================= */
 :root, [data-theme="dark"] {
-  --bg: #0b0f16;
-  --bg-soft: #0e131d;
-  --surface: #121925;
-  --surface-2: #172131;
-  --border: #263141;
-  --border-soft: #1e2837;
+  --bg: #000000;
+  --bg-soft: #050505;
+  --surface: #0a0a0b;
+  --surface-2: #121214;
+  --border: #262629;
+  --border-soft: #1b1b1e;
   --text: #e9eef6;
   --muted: #9aa7ba;
   --faint: #6d7b90;
   --accent: #4fd1a5;
   --accent-strong: #38b98f;
   --accent-soft: rgba(79, 209, 165, .12);
-  --shadow: 0 20px 60px rgba(0, 0, 0, .28);
-  --code-bg: #0d1420;
-  --dot: rgba(154, 167, 186, .14);
-  --glow-a: rgba(45, 212, 191, .13);
-  --glow-b: rgba(99, 102, 241, .12);
-  --glow-c: rgba(217, 70, 239, .09);
+  --shadow: 0 20px 60px rgba(0, 0, 0, .55);
+  --code-bg: #050506;
+  --dot: rgba(255, 255, 255, .10);
+  --glow-a: rgba(45, 212, 191, .10);
+  --glow-b: rgba(99, 102, 241, .09);
+  --glow-c: rgba(217, 70, 239, .07);
   --orb-blend: screen;
   --grad: linear-gradient(95deg, #4fd1a5 0%, #5b9cff 52%, #c084fc 100%);
   --max: 1160px;
