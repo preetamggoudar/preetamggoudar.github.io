@@ -15,12 +15,14 @@ GitHub Pages serves the site.
 | `index.html` | All page content and metadata |
 | `styles.css` | Design system, layout and responsive styles |
 | `script.js` | Scroll reveals, rotating role text, mobile menu, stat counters |
-| `assets/avatar.jpg` | Profile photo (from GitHub avatar) |
+| `assets/avatar.jpg` | GitHub avatar (legacy) |
+| `assets/avatar-linkedin.jpg` | LinkedIn profile photo used by the floating 3D hero card |
 
 ## Update content
 
-Edit `index.html` to change text, links, experience or projects. Update `assets/avatar.jpg`
-to change the photo. Commit and push to `main`; the live site updates in under a minute.
+Edit `index.html` to change text, links, experience or projects. Replace
+`assets/avatar-linkedin.jpg` to change the 3D profile photo. Commit and push to `main`;
+the live site updates in under a minute.
 
 ## Local preview
 
