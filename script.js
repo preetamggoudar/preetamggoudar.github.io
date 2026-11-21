@@ -149,8 +149,9 @@
       addLine("Location: Bengaluru, India · Status: building things that help people.", "dim");
     },
     about: () => {
-      addLine("I'm Preetam — a Computer Science student specialising in AI & ML at", "dim");
-      addLine("upGrad School of Technology (Batch 2026–2030), Bengaluru.", "dim");
+      addLine("I'm Preetam — a Computer Science student specialising in AI & ML in the", "dim");
+      addLine("upGrad School of Technology × Shri Siddhartha Institute of Technology", "dim");
+      addLine("programme (Batch 2026–2030).", "dim");
       addLine("I learn by building, care about community, and play guitar when offline.", "dim");
     },
     skills: () => {
@@ -168,8 +169,9 @@
       addLine("Tip: run `open experience` for the full log.", "dim");
     },
     education: () => {
-      addLine("B.E. Computer Science (AI & ML) — upGrad School of Technology, 2026–2030", "dim");
-      addLine("Class XII / JEE Preparation — PW Vidyapeeth, Karnataka", "dim");
+      addLine("B.E. Computer Science (AI & ML), 2026–2030", "accent");
+      addLine("Shri Siddhartha Institute of Technology", "dim");
+      addLine("in collaboration with upGrad School of Technology", "dim");
     },
     projects: () => {
       addLine("~/projects/campusclaim   [FEATURED]", "accent");

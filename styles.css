@@ -300,6 +300,7 @@ h1 .accent { text-shadow: 0 0 30px var(--glow); }
 
 /* config */
 .config-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; }
+.config-grid.single { grid-template-columns: 1fr; }
 .config-body { padding: 18px 22px 22px; font-size: .78rem; }
 .config-body p { margin: 0 0 6px; }
 .section-cfg { color: var(--accent-2); }
